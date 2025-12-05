@@ -1,0 +1,186 @@
+---
+title: Webhooks
+description: Set up webhooks to automate workflows and integrate with external systems
+---
+
+## Introduction to Webhooks
+
+Webhooks enable real-time communication between the Annu Gulati Documentation platform and your external systems. By configuring webhooks, you can automate processes like notifications, data synchronization, and workflow triggers whenever documentation events occur.
+
+<Columns cols={3}>
+  <Card title="Event-Driven" icon="zap" href="#events">
+    React to documentation changes instantly with event-driven webhooks.
+  </Card>
+  <Card title="Integration" icon="link" href="#integrations">
+    Connect with tools like Slack, GitHub, and CI/CD systems.
+  </Card>
+  <Card title="Automation" icon="settings" href="#automation">
+    Automate repetitive tasks and maintain system synchronization.
+  </Card>
+</Columns>
+
+## Supported Events
+
+Our webhook system supports various documentation events to trigger actions in your integrated systems.
+
+<Tabs>
+  <Tab title="Content Events" icon="file-text">
+    Events related to document creation, updates, and deletion.
+  </Tab>
+  <Tab title="Project Events" icon="folder">
+    Events for project-level changes and team modifications.
+  </Tab>
+  <Tab title="User Events" icon="users">
+    Events triggered by user actions and authentication changes.
+  </Tab>
+</Tabs>
+
+<Steps>
+  <Step title="Create Webhook" icon="plus">
+    Navigate to project settings and create a new webhook endpoint.
+  </Step>
+  <Step title="Select Events" icon="bell">
+    Choose which events should trigger the webhook.
+  </Step>
+  <Step title="Configure Payload" icon="code">
+    Customize the webhook payload format and include relevant data.
+  </Step>
+  <Step title="Test Webhook" icon="check">
+    Send a test payload to verify your endpoint is working correctly.
+  </Step>
+</Steps>
+
+<Callout kind="info">Webhook payloads are sent as JSON with detailed information about the event, including timestamps, user information, and changed content.</Callout>
+
+## Security and Best Practices
+
+Ensure your webhook endpoints are secure and reliable.
+
+<ExpandableGroup>
+  <Expandable title="Signature Verification">
+    Use webhook signatures to verify that requests are coming from our platform and haven't been tampered with.
+  </Expandable>
+  <Expandable title="Rate Limiting">
+    Implement rate limiting on your webhook endpoints to prevent abuse and ensure system stability.
+  </Expandable>
+  <Expandable title="Retry Logic">
+    Handle failed webhook deliveries gracefully with appropriate retry mechanisms.
+  </Expandable>
+</ExpandableGroup>
+
+## Example Implementation
+
+Here's how to implement a webhook handler in different programming languages.
+
+<CodeGroup tabs="Node.js,Python,Go">
+  ```javascript
+const express = require('express');
+const crypto = require('crypto');
+
+const app = express();
+app.use(express.json());
+
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['x-annugulati-signature'];
+  const body = JSON.stringify(req.body);
+  const expectedSignature = crypto
+    .createHmac('sha256', process.env.WEBHOOK_SECRET)
+    .update(body)
+    .digest('hex');
+  
+  if (signature !== expectedSignature) {
+    return res.status(401).send('Invalid signature');
+  }
+  
+  console.log('Webhook received:', req.body);
+  res.status(200).send('OK');
+});
+
+app.listen(3000, () => console.log('Webhook server running'));
+  ```
+  ```python
+from flask import Flask, request, jsonify
+import hmac
+import hashlib
+import os
+
+app = Flask(__name__)
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    signature = request.headers.get('X-AnnuGulati-Signature')
+    body = request.get_data()
+    secret = os.environ.get('WEBHOOK_SECRET').encode()
+    
+    expected_signature = hmac.new(secret, body, hashlib.sha256).hexdigest()
+    
+    if not hmac.compare_digest(signature, expected_signature):
+        return jsonify({'error': 'Invalid signature'}), 401
+    
+    data = request.get_json()
+    print('Webhook received:', data)
+    return jsonify({'status': 'success'}), 200
+
+if __name__ == '__main__':
+    app.run(port=3000)
+  ```
+  ```go
+package main
+
+import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+)
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Printf("Error reading body: %v", err)
+		return
+	}
+	
+	signature := r.Header.Get("X-AnnuGulati-Signature")
+	secret := []byte(os.Getenv("WEBHOOK_SECRET"))
+	
+	mac := hmac.New(sha256.New, secret)
+	mac.Write(body)
+	expectedSignature := hex.EncodeToString(mac.Sum(nil))
+	
+	if !hmac.Equal([]byte(signature), []byte(expectedSignature)) {
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Fprintf(w, "Invalid signature")
+		return
+	}
+	
+	fmt.Printf("Webhook received: %s\n", string(body))
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "OK")
+}
+
+func main() {
+	http.HandleFunc("/webhook", webhookHandler)
+	log.Fatal(http.ListenAndServe(":3000", nil))
+}
+  ```
+</CodeGroup>
+
+<Update label="2024-07-15" description="Webhook Enhancement" tags={["feature", "improvement"]}>
+
+## New Features
+
+- Added support for custom webhook headers
+- Implemented webhook delivery retry logic
+- Enhanced payload customization options
+
+## Improvements
+
+- Improved webhook signature verification
+- Added webhook delivery status tracking
+
+</Update>

@@ -1,0 +1,105 @@
+---
+title: Configuration
+description: Configure your documentation projects and customize the platform settings
+---
+
+## Project Configuration
+
+Configuring your documentation projects allows you to customize the platform to meet your specific needs. From basic project settings to advanced customization options, our configuration system provides flexibility for various documentation workflows.
+
+<Columns cols={2}>
+  <Card title="Basic Settings" icon="settings" href="#basic-settings">
+    Configure fundamental project properties like name, description, and visibility.
+  </Card>
+  <Card title="Advanced Options" icon="sliders" href="#advanced-options">
+    Access advanced configuration settings for power users and enterprise deployments.
+  </Card>
+</Columns>
+
+## Basic Settings
+
+Start with the essential configuration options that define your project's foundation.
+
+<Steps>
+  <Step title="Project Details" icon="file-text">
+    Set your project name, description, and basic metadata.
+  </Step>
+  <Step title="Access Control" icon="users">
+    Configure who can view and edit your documentation.
+  </Step>
+  <Step title="Branding" icon="palette">
+    Customize the appearance with your brand colors and logo.
+  </Step>
+</Steps>
+
+<CodeGroup tabs="JSON,YAML">
+  ```json
+  {
+    "name": "My Documentation Project",
+    "description": "Comprehensive API documentation",
+    "visibility": "private",
+    "brandColor": "#3B82F6"
+  }
+  ```
+  ```yaml
+  name: My Documentation Project
+  description: Comprehensive API documentation
+  visibility: private
+  brandColor: '#3B82F6'
+  ```
+</CodeGroup>
+
+<Callout kind="tip">Use descriptive project names that clearly indicate the purpose and scope of your documentation.</Callout>
+
+## Advanced Options
+
+For more complex documentation needs, explore our advanced configuration features.
+
+<Tabs>
+  <Tab title="Integrations" icon="plug">
+    Connect with external tools and services for enhanced functionality.
+  </Tab>
+  <Tab title="Workflows" icon="git-branch">
+    Set up automated workflows for content approval and publishing.
+  </Tab>
+  <Tab title="Custom Fields" icon="tag">
+    Define custom metadata fields for your documentation structure.
+  </Tab>
+</Tabs>
+
+<ExpandableGroup>
+  <Expandable title="Webhook Configuration">
+    Set up webhooks to receive notifications about project changes and integrate with CI/CD pipelines.
+  </Expandable>
+  <Expandable title="Export Settings">
+    Configure export options for different formats including PDF, HTML, and JSON.
+  </Expandable>
+  <Expandable title="Version Management">
+    Control how versions are created, branched, and merged in your documentation.
+  </Expandable>
+</ExpandableGroup>
+
+## Environment Variables
+
+Configure environment-specific settings using variables.
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `API_BASE_URL` | Base URL for API endpoints | `https://api.annugulati.com` |
+| `BRAND_COLOR` | Primary brand color | `#3B82F6` |
+| `MAX_FILE_SIZE` | Maximum upload file size | `10MB` |
+
+<Update label="2024-08-10" description="Configuration Update" tags={["feature", "improvement"]}>
+
+## New Features
+
+- Added support for custom metadata fields
+- Implemented environment variable configuration
+- Enhanced webhook payload customization
+
+## Improvements
+
+- Improved configuration validation
+- Added configuration import/export functionality
+
+</Update>

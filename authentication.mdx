@@ -1,0 +1,107 @@
+---
+title: Authentication
+description: Learn how to authenticate and secure your documentation projects
+---
+
+## Overview
+
+Authentication is a critical aspect of securing your documentation projects on the Annu Gulati Documentation platform. We provide multiple authentication methods to ensure your content remains protected while allowing appropriate access for team members and stakeholders.
+
+<Tabs>
+  <Tab title="API Keys" icon="key">
+    Use API keys for programmatic access to documentation endpoints.
+  </Tab>
+  <Tab title="OAuth" icon="shield">
+    Implement OAuth 2.0 for secure user authentication and authorization.
+  </Tab>
+  <Tab title="JWT Tokens" icon="lock">
+    Leverage JSON Web Tokens for stateless authentication across sessions.
+  </Tab>
+</Tabs>
+
+## Setting Up Authentication
+
+Follow these steps to configure authentication for your documentation projects.
+
+<Steps>
+  <Step title="Generate API Key" icon="key">
+    Navigate to your account settings and generate a new API key for programmatic access.
+    
+    <CodeGroup tabs="cURL,Python,JavaScript">
+      ```bash
+      curl -X GET \
+        'https://api.annugulati.com/v1/projects' \
+        -H 'Authorization: Bearer YOUR_API_KEY'
+      ```
+      ```python
+import requests
+
+headers = {
+    'Authorization': 'Bearer YOUR_API_KEY'
+}
+
+response = requests.get('https://api.annugulati.com/v1/projects', headers=headers)
+print(response.json())
+      ```
+      ```javascript
+const apiKey = 'YOUR_API_KEY';
+const headers = {
+  'Authorization': `Bearer ${apiKey}`
+};
+
+fetch('https://api.annugulati.com/v1/projects', { headers })
+  .then(response => response.json())
+  .then(data => console.log(data));
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Configure OAuth" icon="settings">
+    Set up OAuth application credentials in your project settings.
+  </Step>
+  <Step title="Test Authentication" icon="check">
+    Verify your authentication setup by making test API calls.
+  </Step>
+</Steps>
+
+<Callout kind="info">Remember to rotate your API keys regularly and never expose them in public repositories or client-side code.</Callout>
+
+## Best Practices
+
+Implementing secure authentication practices ensures your documentation remains protected.
+
+<ExpandableGroup>
+  <Expandable title="Key Rotation">
+    Regularly rotate API keys to minimize security risks from compromised credentials.
+  </Expandable>
+  <Expandable title="Access Control">
+    Implement role-based access control to limit user permissions based on their responsibilities.
+  </Expandable>
+  <Expandable title="Audit Logging">
+    Enable audit logging to track authentication attempts and access patterns.
+  </Expandable>
+</ExpandableGroup>
+
+## Common Issues
+
+Troubleshoot authentication problems with these solutions.
+
+| Issue | Solution |
+|-------|----------|
+| Invalid API key | Check that your API key is correctly formatted and has not expired |
+| OAuth redirect error | Verify your redirect URIs match the configured OAuth application settings |
+| Token expiration | Implement token refresh logic to handle expired JWT tokens |
+
+<Update label="2024-09-20" description="Security Enhancement" tags={["security", "improvement"]}>
+
+## Security Improvements
+
+- Enhanced API key validation
+- Added JWT token expiration handling
+- Improved OAuth flow security
+
+## New Features
+
+- Introduced multi-factor authentication option
+- Added IP whitelisting for API access
+
+</Update>
